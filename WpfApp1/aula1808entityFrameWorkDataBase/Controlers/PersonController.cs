@@ -38,10 +38,35 @@ namespace aula1808entityFrameWorkDataBase.Controlers
                 contexto.Person.Remove(pExcluir);
                 contexto.SaveChanges();
             }
-            
-                
-                
-            
+        }
+        void Editar(int id, Person novoDadosPerson)
+        {
+            Person personAntigo = BuscarPorId(id);
+
+            if(personAntigo != null)
+            {
+                personAntigo.FirstName = novoDadosPerson.FirstName;
+                personAntigo.LastName = novoDadosPerson.LastName;
+                personAntigo.Title = novoDadosPerson.Title;
+
+                AdventureWorks2016Entities contexto = new AdventureWorks2016Entities();
+                contexto.Entry(personAntigo).State = System.Data.Entity.EntityState.Modified;
+                contexto.SaveChanges();
+            }
+        }
+
+        List<Person> PesquisarPorFirstname(string firstName)
+        {
+            // LINQ
+            AdventureWorks2016Entities contexto = new AdventureWorks2016Entities();
+            //var lista = from p in contexto.Person
+            //            select p; // select * from Person
+
+            var lista = from p in contexto.Person
+                        where p.FirstName == firstName
+                        select p;
+
+            return lista.ToList();
         }
     }
 }
